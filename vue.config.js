@@ -79,7 +79,7 @@ module.exports = {
     //productapi
     proxy: {      
       '/devApi': {
-        target: 'http://www.web-jshtml.cn/dependenciesapi/token',//api服务器地址
+        target: 'http://114.215.139.124:8080',//api服务器地址
         changeOrigin: true,
         pathRewrite: {          
             '^/devApi': ''

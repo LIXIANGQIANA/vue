@@ -7,10 +7,15 @@ const routes = [
     redirect:'login',
   },
   {
-    path: "/login",
-    name: "Login",
-    component: () =>import('../views/Login/login.vue')
-  }
+    path:'/login',
+    name:'Login',
+    component: ()=>import('../views/Login/login.vue')
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: () =>import('../views/Register/register.vue')
+  },
 ];
 
 const router = new VueRouter({
