@@ -51,7 +51,6 @@ import qs from "qs";
 export default {
     name:'login',
     setup(props,{root,refs}){
-        
         var validateUsername = (rule, value, callback) => {
             if (value === '') {
                 return callback(new Error('请输入邮箱或者手机'));
@@ -186,10 +185,8 @@ export default {
             ruleForm,rules,
             // methods   
             toggleMenu,resetFormData,submitForm,loginPassword,loginverifyCode
-        }
-        
-    }
-    
+        }  
+    }   
 }
 </script>
 <style lang="scss" scoped>
@@ -208,7 +205,7 @@ export default {
     .menu-tab{
         margin-bottom: 20px;
         text-align: center;
-       li{
+        li{
            display: inline-block;
         //    margin: 0 32px 0 0;
            width: 100px;
@@ -218,29 +215,27 @@ export default {
            color: rgba(0,0,0,.65);
            cursor: pointer;
            transition: color .3s,boder-bottom .5s;
-       }
-       li:hover{
+        }
+        li:hover{
            color: #1890ff;
-       }
-       .current{
+        }
+        .current{
            color: #1890ff;
-           border-bottom:2px solid #1890ff; 
-           
-       }
+           border-bottom:2px solid #1890ff;    
+        }
     }
-       label{
+        label{
             display: block;
             color: rgba(0,0,0,.65);
             font-size: 14px;
             font-weight: 500;
-       }
-       .block{
+        }
+        .block{
            display: block;
         //    margin-top: 20px;
            width:100%;
-       }
-       .margin-top-20{
+        }
+        .margin-top-20{
            margin-top: 20px;
-       }
-
+        }
 </style>
