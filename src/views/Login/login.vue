@@ -137,7 +137,10 @@ export default {
             root.$message({
                type:'success',
                message:response.data.msg
-            }) 
+            })
+            root.$router.push({
+                name:'Index'
+            })
         }).catch(error=>{
             })    
         })
