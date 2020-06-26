@@ -36,7 +36,7 @@ export default {
         // const isCollapse=ref(root.$store.state.isCollapse)
     
         const isCollapse=computed(()=>{
-            return root.$store.state.isCollapse
+            return root.$store.state.app.isCollapse
         })
 
        

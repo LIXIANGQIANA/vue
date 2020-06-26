@@ -99,10 +99,10 @@ export default {
 
         // 展开收起
         const isCollapses=computed(()=>{
-            return root.$store.state.isCollapses
+            return root.$store.state.app.isCollapses
         })
         const fn=()=>{
-            root.$store.commit('SET_COLLAPSES')  
+            root.$store.commit('app/SET_COLLAPSES')  
         }
 
 

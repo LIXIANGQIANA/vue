@@ -24,7 +24,7 @@ export default {
     name:'',
     setup(props,{root}){
         const menuStatus=()=>{
-          root.$store.commit('SET_COLLAPSE')
+          root.$store.commit('app/SET_COLLAPSE')
           
           
             

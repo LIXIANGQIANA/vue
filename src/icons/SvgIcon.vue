@@ -1,7 +1,7 @@
 <template>
     <svg :class="svgClass" aria-hidden="true">
-        <use :xlink:href="svgName"></use>
-    </svg>
+        <use :xlink:href="svgName" />
+    </svg>
 </template>
 <script>
 import {reactive,ref,onMounted, computed} from "@vue/composition-api";
@@ -39,6 +39,7 @@ export default {
     .svg-icon{
             width: 1em;
             height: 1em;
+            vertical-align: -0.15em;
             fill:currentColor;
             color: #ccc;
             font-size: 14px;
