@@ -130,10 +130,9 @@ export default {
                 password:ruleForm.password,
                 type:validatePhone(ruleForm.account)==true?2:1
             }
-        console.log(requestData);
-        
+        // console.log(requestData);
         let data=qs.stringify(requestData)
-        LoginPassword(data).then(response=>{
+        root.$store.dispatch('login/loginPassword',data).then(response=>{
             root.$message({
                type:'success',
                message:response.data.msg
@@ -154,15 +153,19 @@ export default {
             }
             console.log(requestData);
             let data=qs.stringify(requestData)
-            LoginverifyCode(data).then(response=>{
+            root.$store.dispatch('login/loginverifyCode',data).then(response=>{
                  root.$message({
                     type:'success',
                     message:response.data.msg
-                }) 
+                })
+                 root.$router.push({
+                name:'Index'
+            })
             }).catch(error=>{    
             })
         })
 
+        // 表单提交
         const submitForm=((formName)=>{
             refs[formName].validate((valid) => {
                 if (valid) {
