@@ -67,9 +67,6 @@ export default {
             background: hsla(0,0%,100%,.3);
         }
     }
-    span{
-         
-    }
     .user{
         display: inline-block;
         height: 59px!important;
