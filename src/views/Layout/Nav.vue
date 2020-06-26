@@ -60,6 +60,7 @@ export default {
         flex: 0 0 200px;
         background-color: #fff;
         box-shadow: 2px 116px 8px 0 rgba(29,35,41,.05);
+        transition:  all .9s ease 0s;
        -webkit-transition: all .9s ease 0s;
     }
     .close{
