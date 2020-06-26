@@ -5,6 +5,7 @@ const service=axios.create({
   timeout:10000,
   headers:{
     'Content-Type': 'application/x-www-form-urlencoded'
+    // 'Authorization':'Authorization:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE1OTA3MTkwODgzNDQiLCJpc3MiOiJhdXR'
   }
 });
 // 添加请求拦截器

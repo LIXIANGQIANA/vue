@@ -7,6 +7,7 @@ Vue.use(VueCompositionApi);
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/icons/index.js'  //svg组件
+import '@/router/premit.js'
 Vue.use(ElementUI);
 
 

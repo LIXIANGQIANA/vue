@@ -14,7 +14,7 @@ const routes = [
   },
   {
     path: "/register",
-    name: "Register",
+    name: "register",
     hidden:true,
     meta:{
       name:'注册'
@@ -23,7 +23,7 @@ const routes = [
   },
   {
     path:'/login',
-    name:'Login',
+    name:'login',
     hidden:true,
     meta:{
       name:'登陆'
@@ -32,18 +32,18 @@ const routes = [
   },
   {
     path:'/home',
-    name:'Home',
+    name:'home',
     hidden:false,
+    redirect:'index',
     meta:{
       icon:'menu',
       name:'首页'
     },
-    redirect:'/home/index',
     component: Layout,
     children:[
       {
         path:'/home/index',
-        name:'Index',
+        name:'index',
         hidden:false,
         meta:{
           name:'首页'
@@ -54,7 +54,7 @@ const routes = [
   },
   {
     path:'/management',
-    name:'Management',
+    name:'management',
     hidden:false,
     meta:{
       icon:'menu',
@@ -64,7 +64,7 @@ const routes = [
     children:[
       {
         path:'/management/user',
-        name:'User',
+        name:'user',
         meta:{
           name:'用户管理'
         },
@@ -72,7 +72,7 @@ const routes = [
       },
       {
         path:'/management/role',
-        name:'Role',
+        name:'role',
         meta:{
           name:'角色管理'
         },
@@ -80,7 +80,7 @@ const routes = [
       },
       {
         path:'/management/menu',
-        name:'Menu',
+        name:'menu',
         meta:{
           name:'菜单管理'
         },
@@ -88,7 +88,7 @@ const routes = [
       },
       {
         path:'/management/department',
-        name:'Department',
+        name:'department',
         meta:{
           name:'部门管理'
         },

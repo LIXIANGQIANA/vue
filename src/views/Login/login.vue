@@ -46,7 +46,6 @@
 <script>
 import {reactive,ref,onMounted} from "@vue/composition-api";
 import {stripscript,validateUser,validatePass,validateCode,validatePhone,validateEmail} from "@/utils/validate";
-import {LoginPassword,LoginverifyCode} from "@/api/login.js";
 import qs from "qs";
 export default {
     name:'login',
@@ -130,7 +129,6 @@ export default {
                 password:ruleForm.password,
                 type:validatePhone(ruleForm.account)==true?2:1
             }
-        // console.log(requestData);
         let data=qs.stringify(requestData)
         root.$store.dispatch('login/loginPassword',data).then(response=>{
             root.$message({
@@ -138,7 +136,7 @@ export default {
                message:response.data.msg
             })
             root.$router.push({
-                name:'Index'
+                name:'index'
             })
         }).catch(error=>{
             })    
@@ -151,7 +149,7 @@ export default {
                 type:validatePhone(ruleForm.account)==true?2:1,
                 verifyCode:ruleForm.verifyCode,
             }
-            console.log(requestData);
+            
             let data=qs.stringify(requestData)
             root.$store.dispatch('login/loginverifyCode',data).then(response=>{
                  root.$message({
@@ -159,7 +157,7 @@ export default {
                     message:response.data.msg
                 })
                  root.$router.push({
-                name:'Index'
+                name:'index'
             })
             }).catch(error=>{    
             })

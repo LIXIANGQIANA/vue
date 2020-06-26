@@ -11,7 +11,7 @@
                 <span><img src="" alt=""></span>
                 <span>欢迎您806169406@qq.com</span>
             </span>
-            <span class="user">
+            <span class="user"  @click="exit()">
                 <i ><svg-icon SvgClass="why" SvgName="exits" ></svg-icon></i>
                 <span>退出登陆</span>
             </span>
@@ -24,14 +24,26 @@ export default {
     name:'',
     setup(props,{root}){
         const menuStatus=()=>{
-          root.$store.commit('app/SET_COLLAPSE')
-          
-          
-            
+          root.$store.commit('app/SET_COLLAPSE') 
         }
-
+        const exit=(()=>{
+            root.$confirm('是否退出系统?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+            center: true
+        }).then(() => {
+          root.$store.dispatch('login/exit').then(()=>{
+				root.$router.push({
+					name:'Login'
+				})
+          })
+        }).catch(() => {         
+        })
+		})
+        
         return{
-            menuStatus
+            menuStatus,exit
         }
     }
     
@@ -74,6 +86,7 @@ export default {
             background: hsla(0,0%,100%,.3);
         }
     }
+   
    
     
 </style>
