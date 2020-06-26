@@ -25,8 +25,7 @@
                 </el-submenu>
                </template>
             </el-menu>
-
-   </aside>
+    </aside>
 </template>
 <script>
 import {reactive,ref,onMounted, computed} from "@vue/composition-api";
