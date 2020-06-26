@@ -20,17 +20,16 @@
                             </el-option>
 
                         </el-select>
-
                     </el-form-item>
                 </el-col>
 
-                <el-col :span="4" v-if="status.openstatus">
+                <el-col :span="4" v-if="!isCollapses">
                     <el-button type='primary' size="medium" icon="el-icon-search">查询</el-button>
                     <el-button type='primary' size="medium" icon="el-icon-refresh-left">重置</el-button>
                     <a href="#" @click="fn()">暂开<i class='el-icon-arrow-down'></i></a>
                 </el-col>
 
-                <el-col :span="6" v-if="status.closestatus">
+                <el-col :span="6" v-if="isCollapses">
                         <div class="label-wrap">
                             <label for="真实姓名">真实姓名：</label>
                             <div class="content-wrap">
@@ -38,7 +37,7 @@
                             </div>
                         </div>
                 </el-col>
-                <el-col :span="6" v-if="status.closestatus">
+                <el-col :span="6" v-if="isCollapses">
                         <div class="label-wrap">
                             <label for="真实姓名">手机号码：</label>
                             <div class="content-wrap">
@@ -48,7 +47,7 @@
                 </el-col>
            
             </el-row>
-            <el-row v-if="status.closestatus">
+            <el-row v-if="isCollapses">
                 <el-col :span="6" >
                     <div class="label-wrap">
                         <label for="真实姓名">用户状态：</label>
@@ -79,7 +78,7 @@
 import {reactive,ref,onMounted, computed} from "@vue/composition-api";
 export default {
     name:'',
-    setup(root,{}){
+    setup(props,{root}){
         const form=reactive({
             userName:'',
             realName:'',
@@ -98,22 +97,18 @@ export default {
         const sextOption=ref('')
         const delOption=ref('')
 
-        const status=reactive({
-            openstatus:true,
-            closestatus:false
-        })
         // 展开收起
+        const isCollapses=computed(()=>{
+            return root.$store.state.isCollapses
+        })
         const fn=()=>{
-            status.closestatus=!status.closestatus
-            status.openstatus=!status.openstatus
-            console.log( status.closestatus);
-            
+            root.$store.commit('SET_COLLAPSES')  
         }
 
 
         return{
             form,sextOption,delOption,
-            close,status,fn
+            fn,isCollapses
         }
     }
 }
