@@ -17,15 +17,18 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+    .main-wrap{
+        height: 100vh;
+    }
     .el-breadcrumb{
         line-height: 52px;
         padding: 0 20px;
         background-color: #fff;
         border-bottom: 1px solid #ccc;
+        border-left: 1px solid #ccc;
     }
     .content{
-        height: 100vh;
-        margin: 12px 12px 0 12px;
+        margin: 12px 12px 0 ;
         padding: 24px;
         color: #595959;
         background-color: #fff;

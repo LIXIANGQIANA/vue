@@ -1,5 +1,5 @@
 <template>
-    <section class="layout">
+    <section class="layout" >
         <LayoutNav/>
         <div style="display:flex; flex-direction: column; flex: auto;">
         <LayoutHeader/>

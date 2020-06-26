@@ -1,6 +1,6 @@
 <template>
     <header class="header-wrap">
-        <i><svg-icon SvgClass="why" SvgName="menu"></svg-icon></i>
+        <i @click="menuStatus"><svg-icon SvgClass="why" SvgName="menu"></svg-icon></i>
         <span>欢迎进入企业级快速开发平台</span>
         <div class="right">
             <span><i><svg-icon SvgClass="why" SvgName="seacher"></svg-icon></i></span>
@@ -19,12 +19,27 @@
     </header>         
 </template>
 <script>
+import {reactive,ref,onMounted} from "@vue/composition-api";
 export default {
     name:'',
+    setup(props,{root}){
+        const menuStatus=()=>{
+          root.$store.commit('SET_COLLAPSE')
+          
+          
+            
+        }
+
+        return{
+            menuStatus
+        }
+    }
+    
 }
 </script>
 <style lang="scss" scoped>
     .header-wrap{
+        
         padding-right: 12px;
         height: 59px;
         line-height: 59px;

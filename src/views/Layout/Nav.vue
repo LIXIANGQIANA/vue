@@ -1,12 +1,12 @@
 <template>
-   <aside class="side-wrap">
-           <div class="logo">
-               <!-- <a href="#"> -->
-                <img src="../../assets/logo.png" alt="logo">
-                <h1>后台管理系统</h1>
+   <aside class="side-wrap" :class="[isCollapse? 'close':'open']">
+           <div class="logo">  
+               <!-- <a href="#"> -->   
+                    <img src="../../assets/logo.png" alt="logo">
+                    <h1>后台管理系统</h1>
                <!-- </a> -->
            </div>
-           <el-menu  class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" text-color="#595959"  router>
+           <el-menu  class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse"  text-color="#595959"  router>
         
                <template v-for="(item,index) in routers">
                <el-submenu  v-if="!item.hidden" :key="item.id" :index="index+''">
@@ -29,12 +29,18 @@
    </aside>
 </template>
 <script>
-import {reactive,ref,onMounted} from "@vue/composition-api";
+import {reactive,ref,onMounted, computed} from "@vue/composition-api";
 export default {
     name:'',
     setup(props,{root}){
         const routers=reactive(root.$router.options.routes)
-        const  isCollapse=ref(true)
+        // const isCollapse=ref(root.$store.state.isCollapse)
+    
+        const isCollapse=computed(()=>{
+            return root.$store.state.isCollapse
+        })
+
+       
         const handleOpen=(key, keyPath)=>{
             console.log(key);
         }
@@ -52,25 +58,37 @@ export default {
 </script>
 <style lang="scss" scoped>
     .side-wrap{
-        width: 64px;
+        flex: 0 0 200px;
         background-color: #fff;
         box-shadow: 2px 116px 8px 0 rgba(29,35,41,.05);
+       -webkit-transition: all .9s ease 0s;
     }
+    .close{
+        flex: 0 0 64px;
+    }
+    a{
+        // display: inline-block;
+        text-decoration: none;
+        outline: none;
+        transition: color 0.9s ease 0s;
+    }
+    
     img{
         display: inline-block;
         width: 32px;
         height: 32px;
-        margin-top: 13px;
+        vertical-align: middle;
+        border-style: none; 
     }
     .logo{
-        padding-left: 12px;
-        // overflow: hidden;
+      padding-left: 24px;
         height: 59px;
-        vertical-align: middle;
-        line-height: 59px;
+        line-height: 59px ;
         background-color: #1890ff;
         h1{
             display: inline-block;
+            vertical-align: middle;
+            margin-left: 8px;
             text-align: center;
             text-decoration: none;
             color: #fff;
@@ -97,6 +115,12 @@ export default {
         }
         svg{
             margin-right: 10px;
+        }
+        .el-menu-vertical-demo{
+            &.el-menu{
+            border: none;
+        }
+            
         }
        
 
