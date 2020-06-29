@@ -3,10 +3,9 @@ import router from "./index.js";
 import {getToken,removeToken} from "@/utils/app.js";
 const whiteRouter=['/login']
 router.beforeEach((to ,from, next)=>{
-    console.log(getToken());
-    
+    // console.log(getToken());
    if(getToken()){
-        console.log('存在');
+        // console.log('存在');
         if(to.path === '/login'){
             removeToken()
             next()
@@ -20,6 +19,7 @@ router.beforeEach((to ,from, next)=>{
             next()
         }else{
             next('/login')
+            // next(`/login?redirect=${to.path}`)
         }
    }
 })

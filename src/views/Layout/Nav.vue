@@ -57,14 +57,23 @@ export default {
 </script>
 <style lang="scss" scoped>
     .side-wrap{
-        flex: 0 0 200px;
+        box-sizing: border-box;
         background-color: #fff;
         box-shadow: 2px 116px 8px 0 rgba(29,35,41,.05);
         transition:  all .9s ease 0s;
        -webkit-transition: all .9s ease 0s;
     }
+    .open{
+        flex: 0 0 200px;
+        max-width: 200px;
+        min-width: 200px;
+        width: 200px;
+    }
     .close{
         flex: 0 0 64px;
+        max-width: 64;
+        min-width: 64px;
+        width: 64px;
     }
     a{
         // display: inline-block;

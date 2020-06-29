@@ -1,9 +1,9 @@
-import {LoginPassword,LoginverifyCode} from "@/api/login.js";
-import {getToken,setToken,removeToken} from "@/utils/app.js";
+import {LoginPassword,LoginverifyCode,Logout} from "@/api/login.js";
+import {setToken,getToken,removeToken,} from "@/utils/app.js";
 const login={
     namespaced:true,
     state:{
-        token:'',
+        token: '',
         username:''
     },
     getters:{},
@@ -17,16 +17,15 @@ const login={
     },
     actions:{
         // 密码登陆
-        
         loginPassword({commit},requestdata){
-            
             return new Promise((resolve,reject)=>{
-                    LoginPassword(requestdata).then((response)=>{
+                LoginPassword(requestdata).then((response)=>{
                         setToken(response.headers.authorization)
+                        commit('SET_TOKEN',response.headers.authorization)
                         resolve(response)
-                    }).catch((error)=>{
-                        reject(error)
-                    }) 
+                }).catch((error)=>{
+                    reject(error)    
+                }) 
             })
         },
         // 验证码登陆
@@ -34,18 +33,23 @@ const login={
             return new Promise((resolve,reject)=>{
                 LoginverifyCode(requestdata).then((response)=>{
                     setToken(response.headers.authorization)
-                       resolve(response)
-                    }).catch((error)=>{
+                    commit('SET_TOKEN',response.headers.authorization)
+                    resolve(response)
+                }).catch((error)=>{
                         reject(error)
-                    }) 
+                }) 
             })
         },
         // 退出
-        exit({commit}){
+        logout({commit}){
             return new Promise((resolve,reject)=>{
-                removeToken()
-                resolve()
-
+                Logout().then(response=>{
+                    removeToken()
+                    commit('SET_TOKEN','')
+                    resolve(response)
+                }).catch(error=>{
+                    reject(error)
+                })
             })
         }
 

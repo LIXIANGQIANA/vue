@@ -131,15 +131,21 @@ export default {
             }
         let data=qs.stringify(requestData)
         root.$store.dispatch('login/loginPassword',data).then(response=>{
-            root.$message({
-               type:'success',
-               message:response.data.msg
-            })
+            // root.$message({
+            //    type:'success',
+            //    message:`登陆${response.data.msg}`
+            // })
             root.$router.push({
-                name:'index'
+                name:'index',
+                path:''
             })
-        }).catch(error=>{
-            })    
+        }).catch(error=>{   
+            root.$message({
+               type:'error',
+               message:error.msg
+            })
+            })
+
         })
 
         // 验证码登陆
@@ -151,15 +157,20 @@ export default {
             }
             
             let data=qs.stringify(requestData)
+
             root.$store.dispatch('login/loginverifyCode',data).then(response=>{
-                 root.$message({
-                    type:'success',
-                    message:response.data.msg
-                })
+                //  root.$message({
+                //     type:'success',
+                //     message:response.data.msg
+                // })
                  root.$router.push({
                 name:'index'
             })
-            }).catch(error=>{    
+            }).catch(error=>{  
+                root.$message({
+                type:'error',
+                message:error.msg
+            }) 
             })
         })
 

@@ -21,3 +21,13 @@ export function LoginverifyCode(data){
         data
     })
 }
+
+/**
+ * 退出登陆
+ */
+export function Logout() {
+    return service.request({
+        method: 'post',
+        url: '/login/logout'
+    })
+  }

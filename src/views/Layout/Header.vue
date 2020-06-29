@@ -33,12 +33,12 @@ export default {
             type: 'warning',
             center: true
         }).then(() => {
-          root.$store.dispatch('login/exit').then(()=>{
+          root.$store.dispatch('login/logout').then(()=>{
 				root.$router.push({
-					name:'Login'
+					name:'login'
 				})
           })
-        }).catch(() => {         
+        }).catch((error) => {     
         })
 		})
         

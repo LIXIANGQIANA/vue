@@ -1,5 +1,5 @@
 <template>
-    <section class="layout" >
+    <section id="layout" >
         <LayoutNav/>
         <div style="display:flex; flex-direction: column; flex: auto;">
         <LayoutHeader/>
@@ -20,9 +20,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    .layout{
+    #layout{
+        // height: 100vh !important;
         overflow-x: hidden;
         display: flex;
+        flex: auto;
         flex-direction: row;
         background-color: #f0f2f5;  
     }

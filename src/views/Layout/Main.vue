@@ -1,15 +1,15 @@
 <template>
-            <main class="main-wrap">
-                <div class="tab-wrap">
-                    <el-breadcrumb separator-class="el-icon-arrow-right">
-                        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                        <!-- <el-breadcrumb-item>活动管理</el-breadcrumb-item> -->
-                    </el-breadcrumb>
-                </div>
-                <div class="content">
-                    <router-view></router-view>
-                </div>
-            </main> 
+    <main class="main-wrap">
+        <div class="tab-wrap">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                <!-- <el-breadcrumb-item>活动管理</el-breadcrumb-item> -->
+            </el-breadcrumb>
+        </div>
+        <div class="content">
+            <router-view></router-view>
+        </div>
+    </main>  
 </template>
 <script>
 export default {
