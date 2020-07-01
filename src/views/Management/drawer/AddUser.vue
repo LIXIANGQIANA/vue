@@ -179,13 +179,9 @@ export default {
                 userIdentity: addForm.userIdentity,
                 delFlag: addForm.delFlag
             }
-            console.log(requestData);
-            
-
             let data=qs.stringify(requestData)
             InsertUser(data).then(respnse=>{
-                console.log(response);
-                
+                   
             }).catch(error=>{
 
             })

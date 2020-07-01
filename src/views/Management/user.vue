@@ -38,7 +38,7 @@
                 </el-col>
 
                 <el-col :span="6" v-if="!isCollapses">
-                    <el-button type='primary' size="mini" icon="el-icon-search">查询</el-button>
+                    <el-button type='primary' size="mini" icon="el-icon-search" @click="seacherInfo()">查询</el-button>
                     <el-button type='primary' size="mini" icon="el-icon-refresh-left" @click="resetForm()">重置</el-button>
                     <a href="#" @click="fn()">暂开<i class='el-icon-arrow-down'></i></a>
                 </el-col>
@@ -59,7 +59,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-button type='primary' size="mini" icon="el-icon-search">查询</el-button>
+                    <el-button type='primary' size="mini" icon="el-icon-search" @click="seacherInfo()">查询</el-button>
                     <el-button type='primary' size="mini" icon="el-icon-refresh-left" @click="resetForm()">重置</el-button>
                     <a href="#"  @click="fn()">收起<i class='el-icon-arrow-up'></i></a>
                 </el-col> 
@@ -136,10 +136,9 @@ export default {
             realName:'',
             email:'',
             phone:'',
-            sex:'',
             delFlag:[
-                {label:'正常',value:'1'},
-                {label:'冻结',value:'0'}
+                {label:'启用',value:'1'},
+                {label:'禁用',value:'0'}
             ]
 
         })
@@ -156,17 +155,19 @@ export default {
         // 获取用户列表
         const getUserList=()=>{
             let requestData={
-                realName:'',
-                phone:'',
-                email:'',
-                delFlag:'',
+                realName: form.realName ,
+                phone:form.phone,
+                email:form.email,
+                delFlag:delOption.value,
                 startBirthday:'',
                 endBirthday:'',
                 page:page.pageNum,
-                pageSize:page.pageSize
-                
+                pageSize:page.pageSize  
             }
+            console.log(requestData);
+            
             let data=qs.stringify(requestData)
+
             loading.value=true
             ListByUser(data).then(res=>{
                 let data=res.data.result.list
@@ -178,6 +179,12 @@ export default {
             })
         }
 
+        // 查询
+        const seacherInfo=()=>{
+            console.log(1111);
+            getUserList()
+        }
+
         // 编辑
         const  handleEdit=(value)=>{
             
@@ -186,30 +193,29 @@ export default {
    
         }
         // 删除当前
-        const  deleteItem=(id)=>{
-            deleteId.value=id
+        const  deleteItem=(val)=>{
+            console.log(val);
+            deleteId.value=val
             root.confirm({
                 content:'是否删除当前',
                 fn:confirmDelete,
-                id:deleteId.value
+                
             })
         }
-        console.log(deleteId.value);
-        
         // 删除全部
         const  deleteAll=()=>{
-        //    handleSelectionChange()
-            
-            if(!value){
+            let id=deleteId.value
+            if(id ===''){
                 root.$message({
                     type:'error',
                     message:'请选择要删除的内容'
                 })
+                return false
             }
             root.confirm({
                 content:'是否删除全部',
                 fn:confirmDelete,
-                id:deleteId.value
+                
             })
         }
 
@@ -283,7 +289,9 @@ export default {
             // reactive
             form,tableData,page,
             // methods
-            handleEdit,deleteItem,deleteAll,confirmDelete,resetForm,fn,handleSizeChange,handleCurrentChange,getUserList,toSex,toDelFlag,toUserIdentity,handleSelectionChange
+            handleEdit,deleteItem,deleteAll,confirmDelete,resetForm,fn,handleSizeChange,
+            handleCurrentChange,getUserList,toSex,toDelFlag,toUserIdentity,
+            handleSelectionChange,seacherInfo
         }
     }
 }

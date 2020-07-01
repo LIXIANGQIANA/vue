@@ -14,7 +14,6 @@ export default{
                     message: '删除成功!'
                 });
                 }).catch(() => {
-                    parmas.id=""
                     Message({
                     type: 'info',
                     message: '已取消删除'
