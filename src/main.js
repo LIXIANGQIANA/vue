@@ -8,9 +8,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/icons/index.js'  //svg全局组件
 import '@/router/premit.js'
+import global from  '@/utils/global.js'
 Vue.use(ElementUI);
-
-
+Vue.use(global);
 Vue.config.productionTip = false;
 
 new Vue({

@@ -50,7 +50,7 @@
                                      <el-button type="primary" size="small" @click="submitForm('registerForm')" class="block margin-top-20"  >注册</el-button>
                                 </el-col>
                                 <el-col :span="10" >
-                                   <router-link :to="{name:'Login'}" class="btn">使用已有账户登录</router-link>
+                                   <router-link :to="{name:'login'}" class="btn">使用已有账户登录</router-link>
                                 </el-col>
                             </el-row>
                         </el-form-item>

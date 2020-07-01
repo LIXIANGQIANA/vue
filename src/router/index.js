@@ -2,6 +2,11 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Layout from "@/views/Layout/index.vue";
 Vue.use(VueRouter);
+// 解决Element-ui在vue-router在3.0以上版本点击菜单报错问题
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 const routes = [
   
   {
