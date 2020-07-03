@@ -5,7 +5,7 @@
             <el-row :gutter="20">
                 <el-col :span="4">
                     <el-form-item label="姓名"> 
-                        <el-input v-model="form.realName" placeholder="请输入姓名" size="small"></el-input>
+                        <el-input v-model="form.realName" placeholder="请输入账号" size="small"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -14,12 +14,16 @@
                             size="small"
                             type="dates"
                             v-model="startBirthday"
+                            format="yyyy 年 MM 月 dd 日"
+                            value-format="yyyy-MM-dd"
                             placeholder="开始日期">
                         </el-date-picker>
                         <el-date-picker
                             size="small"
                             type="dates"
                             v-model="endBirthday"
+                            format="yyyy 年 MM 月 dd 日"
+                            value-format="yyyy-MM-dd"
                             placeholder="结束日期">
                         </el-date-picker>
                     </el-form-item>
@@ -65,6 +69,7 @@
                 </el-col> 
             </el-row>
                 <el-button type='primary' size="mini" icon="el-icon-plus"  @click="drawer_info=true">添加用户</el-button>
+                <el-button size="mini" @click="deleteAll" v-if='deleteAll_btn'>批量删除</el-button>
         </el-form>
 
         <!-- 表格 -->
@@ -74,7 +79,7 @@
              
         >
             <el-table-column type="selection" width="40"></el-table-column>
-            <el-table-column prop="userName" label="账号" align="center" width="120px"></el-table-column>
+            <el-table-column prop="username" label="用户编码" align="center" width=""></el-table-column>
             <el-table-column prop="realName" label="姓名" align="center" > </el-table-column>
             <el-table-column prop="sex" label="性别" align="center" width="50px" :formatter="toSex"></el-table-column>
             <el-table-column prop="birthday" label="生日" align="center" ></el-table-column>
@@ -85,7 +90,7 @@
             <el-table-column prop="delFlag" label="状态" align="center" width="100px" :formatter="toDelFlag"></el-table-column>
             <el-table-column label="操作" align="center" width="250px">
                 <template slot-scope="scope">
-                    <el-button size="mini"  @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="mini"  @click="handleEdit(scope.row.id)">编辑</el-button>
                     <el-button size="mini"  @click="deleteItem( scope.row.id)">删除</el-button>
                 </template>
             </el-table-column>
@@ -93,13 +98,15 @@
         
         <!-- 新增弹窗 -->
         <!-- <DialogAddUser :flag.sync='drawer_info'  @close='close'/> -->
-        <DialogAddUser :flag.sync='drawer_info'/>
+        <DialogAddUser :flag.sync='drawer_info' @getUserList="getUserList"/>
+        <!-- 修改弹窗 -->
+        <!-- <DialogAddUser :flag.sync='drawer_info'  @close='close'/> -->
+        <DialogEditUser :flag.sync='drawer_editinfo' :id="editId"  @getUserList="getUserList"/>
 
         <el-row style="margin-top:20px">
-            <el-col :span="12">
-                <el-button size="mini" @click="deleteAll">批量删除</el-button>
-            </el-col>
-            <el-col :span="12">
+            <!-- <el-col :span="12">
+            </el-col> -->
+            <el-col :span="24">
                 <el-pagination
                     class="pull-right"
                     @size-change="handleSizeChange"
@@ -119,18 +126,22 @@
 <script>
 import {reactive,ref,onMounted, computed} from "@vue/composition-api";
 import DialogAddUser from "./drawer/AddUser.vue";
+import DialogEditUser from "./drawer/EditUser.vue";
 import {ListByUser,DeleteUser} from "@/api/user.js"
 import qs from "qs"
 export default {
     name:'',
-    components:{ DialogAddUser },
+    components:{ DialogAddUser,DialogEditUser },
     setup(props,{root,refs}){
         const startBirthday=ref('')
         const endBirthday=ref('')
         const delOption=ref('')
         const drawer_info=ref(false)
+        const drawer_editinfo=ref(false)
         const deleteId=ref('')
+        const editId=ref(''*1)
         const loading=ref(false)
+        const deleteAll_btn=ref(false)
         const form=reactive({
             userName:'',
             realName:'',
@@ -138,7 +149,7 @@ export default {
             phone:'',
             delFlag:[
                 {label:'启用',value:'1'},
-                {label:'禁用',value:'0'}
+                {label:'停用',value:'0'}
             ]
 
         })
@@ -155,19 +166,17 @@ export default {
         // 获取用户列表
         const getUserList=()=>{
             let requestData={
-                realName: form.realName ,
+                username: form.username,
+                realName:form.realName,
                 phone:form.phone,
                 email:form.email,
                 delFlag:delOption.value,
-                startBirthday:'',
-                endBirthday:'',
+                startBirthday: startBirthday.value[0]||'',
+                endBirthday: endBirthday.value[0] || '',
                 page:page.pageNum,
                 pageSize:page.pageSize  
-            }
-            console.log(requestData);
-            
+            }  
             let data=qs.stringify(requestData)
-
             loading.value=true
             ListByUser(data).then(res=>{
                 let data=res.data.result.list
@@ -181,57 +190,59 @@ export default {
 
         // 查询
         const seacherInfo=()=>{
-            console.log(1111);
             getUserList()
         }
 
         // 编辑
         const  handleEdit=(value)=>{
-            
-            
-            drawer_info.value=true
-   
+             drawer_editinfo.value=true
+             editId.value=value
         }
         // 删除当前
         const  deleteItem=(val)=>{
-            console.log(val);
             deleteId.value=val
             root.confirm({
                 content:'是否删除当前',
+                // deleteId: deleteId.value ,  
                 fn:confirmDelete,
-                
             })
         }
         // 删除全部
         const  deleteAll=()=>{
-            let id=deleteId.value
-            if(id ===''){
-                root.$message({
-                    type:'error',
-                    message:'请选择要删除的内容'
-                })
-                return false
-            }
+            // if(!deleteId.value && deleteId.value.length==0 ){
+            //     root.$message({
+            //         message:'请选择要删除的内容',
+            //         type:'error'
+            //     })
+            //     return false
+            // }
             root.confirm({
                 content:'是否删除全部',
-                fn:confirmDelete,
-                
+                // deleteId:deleteId.value,
+                fn:confirmDelete 
             })
         }
 
         const confirmDelete=()=>{
-            DeleteUser({userId:deleteId.value}).then(res=>{
-                console.log(res);
+            let deleteData={
+                userId:deleteId.value
+            }
+            let data=qs.stringify(deleteData)
+            console.log(data);
+            DeleteUser(data).then(res=>{
+                deleteId.value=''
                 getUserList()
             }).catch(error=>{
-
+                deleteId.value=''
             })
         }
 
-          const handleSelectionChange=(val)=>{
-            deleteId.value=val
-            console.log(deleteId.value);
-            
+        const handleSelectionChange=(val)=>{
+            if(val){
+                deleteAll_btn.value=!deleteAll_btn.value
+            }
+            let id=val.map(item=>item.id)
+            deleteId.value=id.join('') 
         }
 
         // 分页
@@ -256,18 +267,15 @@ export default {
         }
         // 性别转换
         const toSex=(row, column, cellValue, index)=>{
-            return row.sex==0?'女':'男'
-            
+            return row.sex==0?'女':'男' 
         }
         // 职位转换
         const toUserIdentity=(row, column, cellValue, index)=>{
-            return row.sex==1?'普通成员':'上级'
-            
+            return row.sex==1?'普通成员':'上级'  
         }
         // 状态转换
         const toDelFlag=(row, column, cellValue, index)=>{
-            return row.sex==0?'停用':'启用'
-            
+            return row.sex==0?'停用':'启用'  
         }
         // 展开收起
         const isCollapses=computed(()=>{
@@ -285,7 +293,7 @@ export default {
 
         return{
             // ref
-            delOption,drawer_info,isCollapses,endBirthday,startBirthday,deleteId,loading,
+            delOption,drawer_info,isCollapses,endBirthday,startBirthday,deleteId,loading,deleteAll_btn,drawer_editinfo,editId,
             // reactive
             form,tableData,page,
             // methods

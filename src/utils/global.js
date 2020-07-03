@@ -1,4 +1,5 @@
 import { MessageBox, Message  } from 'element-ui';
+// 删除弹窗的全局方法
 export default{
     install(Vue,options){
         Vue.prototype.confirm=(parmas)=>{
@@ -8,7 +9,7 @@ export default{
                 type: 'warning',
                 center: true
                 }).then(() => {
-                    parmas.fn && parmas.fn()
+                    parmas.fn && parmas.fn(parmas.deleteId || '')
                     Message({
                     type: 'success',
                     message: '删除成功!'

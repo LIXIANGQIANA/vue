@@ -1,19 +1,20 @@
 <template>
     <el-drawer
         @close="close"
+        @open="open"
         :wrapperClosable="false"
         :visible.sync="drawer_info"
         custom-class="demo-drawer"
-        title="新增"
+        title="修改"
         >
         <div class="demo-drawer__content">
             <el-form  :model="addForm" ref='form' :rules="addRules">
                 <el-form-item label="机构ID：" label-width="80px" prop='orgId'>
                     <el-input v-model="addForm.orgId" autocomplete="off" size="small "></el-input>
                 </el-form-item>
-                <!-- <el-form-item label="账号：" label-width="80px" prop='userName'>
-                    <el-input v-model="addForm.userName" autocomplete="off" size="small "></el-input>
-                </el-form-item> -->
+                <el-form-item label="用户编码" label-width="80px" prop='userName'>
+                    <el-input v-model="addForm.username" autocomplete="off" size="small "></el-input>
+                </el-form-item>
                 <el-form-item label="姓名：" label-width="80px" prop='realName'>
                     <el-input v-model="addForm.realName" autocomplete="off" size="small "></el-input>
                 </el-form-item>
@@ -69,9 +70,9 @@
     </el-drawer>
 </template>
 <script>
-import { reactive, ref, watchEffect} from '@vue/composition-api';
+import { reactive, ref, watchEffect, onMounted} from '@vue/composition-api';
 import qs from "qs";
-import {InsertUser} from "@/api/user.js" 
+import {FindUserById,UpdateUser} from "@/api/user.js" 
 import {validatePass,validatePhone,validateEmail} from "@/utils/validate.js";
 export default {
     name:'dialogAddUser',
@@ -79,6 +80,10 @@ export default {
         flag:{
             type:Boolean,
             default:false
+        },
+        id:{
+            type:Number,
+            default:''
         }
     },
     setup(props,{emit,refs,root}){
@@ -116,7 +121,7 @@ export default {
 
         const drawer_info=ref(false)
         const addForm=reactive({
-            // userName:'',
+            username:'',
             orgId: 0,
             realName: '',
             phone: '',
@@ -133,10 +138,10 @@ export default {
             orgId: [
             { required: false, message: '请输入机构ID', trigger: 'blur' }
           ],
-        //    userName: [
-        //     { required: true, message: '请输入账号', trigger: 'blur' },
-        //     { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
-        //   ],
+           userId: [
+            { required: true, message: '请输入账号', trigger: 'blur' },
+            { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+          ],
             realName: [
             { required: true, message: '请输入姓名', trigger: 'blur' },
             { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
@@ -171,45 +176,72 @@ export default {
             drawer_info.value=false
             // emit('close',false)
             emit('update:flag',false)
+           
         }
-        const addUser=()=>{
+        const open=()=>{
+           findUserById()
+             
+        }
+        const findUserById=()=>{
             let requestData={
+                userId: props.id
+            }
+            let data=qs.stringify(requestData)
+            FindUserById(data).then(res=>{
+                let responseData=res.data.result
+                    addForm.username=responseData.username
+                    addForm.realName=responseData.realName
+                    addForm.phone=responseData.phone
+                    addForm.email=responseData.email
+                    addForm.userIdentity=responseData.userIdentity
+                    addForm.sex=responseData.sex
+                    addForm.delFlag=responseData.delFlag
+                }).catch(error=>{     
+                })
+
+        }
+
+        const updateUser=()=>{
+            let requestDat={
+                userId:props.id,
                 orgId: addForm.orgId,
                 realName: addForm.realName,
                 phone: addForm.phone,
                 email: addForm.email,
-                sex: addForm.sex,
                 password: addForm.password,
+                sex: addForm.sex,
                 workNo: addForm.workNo,
                 birthday: addForm.birthday,
                 userIdentity: addForm.userIdentity,
                 delFlag: addForm.delFlag
             }
-            let data=qs.stringify(requestData)
-            InsertUser(data).then(res=>{
-                root.$message({
+            let dat=qs.stringify(requestDat)
+            console.log(dat);
+            UpdateUser({dat}).then(res=>{
+                 root.$message({
                     type:'success',
                     message:res.data.msg
-                })
-                emit('getUserList')    
-                }).catch(error=>{
-                    root.$message({
-                        type:'error',
-                        message:error.msg
-                    })
-                })
-
+                })    
+            emit('getUserList')
+            }).catch(error=>{
+                console.log(error);
+                
+            })
         }
+
         const sumbmit=(form)=>{
             refs[form].validate((valid) => {
                 if (valid) {
-                    addUser()
+                    updateUser()
                 } else {
-                    
                     return false;
                 }
         });   
         }
+
+        onMounted(()=>{
+             
+        })
         
         watchEffect(()=>drawer_info.value=props.flag)
             return{
@@ -218,7 +250,7 @@ export default {
                 // reactive
                 addForm,addRules,
                 // methods
-                close,sumbmit,addUser
+                close,open,sumbmit,findUserById,updateUser
             }
         }
     }
